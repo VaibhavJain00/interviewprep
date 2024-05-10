@@ -1,0 +1,64 @@
+<%- include('partials/header') -%>
+	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/css/post.css">
+	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+	<div class="container form-container sign-in-container">
+		<h2>Compose</h2>
+		<div class="title">
+			<label>Title</label>
+			<textarea class="form-control" name="titleInput" cols="100" rows="1" class="composeCon"><%=title%></textarea>
+		</div>
+		<br>
+		<label>Post</label>
+		<br><br>
+		<div id="editor">
+			<%-content%>
+		</div>
+		<br>
+		<div class="tags">
+			<label>Tags</label>
+			<textarea name="tagsInput" cols="100" rows="1" class="composeCon" placeholder="If more than one, keep it in commas. Ex:CompanyName, Experience"><%=tags%></textarea>
+		</div>
+		<br>
+		<script>
+			var editor = new Quill('#editor', {
+				modules: {
+					toolbar: [
+						[{ header: [1, 2, false] }],
+						['bold', 'italic', 'underline'],
+						['image', 'code-block']
+					]
+				},
+				theme: 'snow',
+			});
+
+			async function sendPost() {
+				const content = editor.getContents().ops;
+				const title = document.querySelector('.form-control').value;
+				const tags = document.getElementsByName('tagsInput')[0].value;
+				console.log(tags);
+				const data = {
+					content: content,
+					title: title,
+					tags: tags
+				}
+				const response = await fetch('http://localhost:3000<%=button_action%>', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				});
+				const resData = await response.json();
+				if(response.ok){
+					window.location.replace('http://localhost:3000' + resData.path);
+				} else {
+					window.location.replace('http://localhost:3000')
+				}
+			}
+
+		</script>
+		<button onclick="sendPost()" class="btn">Publish</button>
+	</div>
+	<%- include('partials/footer') -%>

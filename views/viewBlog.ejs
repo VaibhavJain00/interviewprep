@@ -1,0 +1,44 @@
+<%- include('partials/header') -%>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="/css/post.css">
+  <link rel="stylesheet" href="/css/comment.css">
+  <script src="https://kit.fontawesome.com/b42148c4b8.js" crossorigin="anonymous"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <div class="container form-container sign-in-container">
+    <h1>
+      <%= title %>
+    </h1>
+    <% if (edit) { %>
+    <a href="http://localhost:3000/editBlog/<%=_id%>" class="btn"> Edit <i class="fa-solid fa-pencil"></i></a>
+    <% } %>
+    <p>
+      <%- content -%>
+    </p>
+
+    <form action="/blog/comment/<%=_id%>" method="POST">
+      <input type="hidden" name="commentParentId" value="null">
+      <div class="form">
+        <div class="form-group">
+          <label for="comment">Your Comment</label>
+          <textarea name="comment" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default btn-send">Send</button>
+      </div>
+    </form>
+
+    <br>
+
+    <h3><strong>Comments</strong></h3>
+
+    <div class="comment-container">
+      <div class="post-comments">
+        <div class="row">
+          <% for (let comment of comments) { %>
+            <%- include('comment', {comment: comment, B_id: _id}) %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  <script src="/js/comment.js"></script>
+<%- include('partials/footer') -%>

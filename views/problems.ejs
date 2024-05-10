@@ -1,0 +1,22 @@
+<%- include("partials/header") -%>
+    <link rel="stylesheet" href="/css/card.css">
+    <% for (let problem of problems) { %>
+        <div class="webinar-card">
+            <div class="webinar-card__content">
+                <br>
+                <h1 class="userInfo"><%= problem.title %></h1>
+                <br><br>
+                <a id="registerBtn" class="btn" href="/problem/<%=problem._id%>">know more</a>
+                <ul>
+                    <li>Related Topics:</li>
+                    <% for (let tag of problem.tags) { %>
+                        <li><span class="label"><%= tag %></span></li>
+                    <% } %>
+                </ul>
+                <br>
+            </div>
+            <div data-pym-src="https://www.jdoodle.com/embed/v1/b80d594d4304683e"></div>
+            <script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"> </script>
+        </div>
+    <% } %>
+<%- include("partials/footer") -%>
